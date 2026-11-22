@@ -1,4 +1,3 @@
-
 from fastapi import FastAPI, UploadFile, File, Form, Header
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
@@ -11,9 +10,6 @@ from urllib.parse import quote
 app = FastAPI(title="Melodify API")
 
 
-# ==========================================
-# CORS CONFIGURATION
-# ==========================================
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -29,9 +25,6 @@ app.add_middleware(
 )
 
 
-# ==========================================
-# DATABASE CONNECTION
-# ==========================================
 def get_db_connection():
     return mysql.connector.connect(
         host="localhost",
@@ -41,15 +34,9 @@ def get_db_connection():
     )
 
 
-# ==========================================
-# SETTINGS
-# ==========================================
 MAX_AUDIO_SIZE = 25 * 1024 * 1024
 
 
-# ==========================================
-# PYDANTIC MODELS
-# ==========================================
 class RegisterRequest(BaseModel):
     username: str = ""
     email: str = ""
@@ -86,9 +73,6 @@ class PlaylistSongRequest(BaseModel):
     song_id: int | None = None
 
 
-# ==========================================
-# REGISTER
-# ==========================================
 @app.post("/api/register")
 def register(data: RegisterRequest):
 
@@ -143,9 +127,6 @@ def register(data: RegisterRequest):
             connection.close()
 
 
-# ==========================================
-# LOGIN
-# ==========================================
 @app.post("/api/login")
 def login(data: LoginRequest):
 
@@ -206,9 +187,6 @@ def login(data: LoginRequest):
             connection.close()
 
 
-# ==========================================
-# GET ALL SONGS / SEARCH SONGS
-# ==========================================
 @app.get("/api/songs")
 def get_songs(search: str = ""):
 
@@ -284,9 +262,6 @@ def get_songs(search: str = ""):
             connection.close()
 
 
-# ==========================================
-# UPLOAD MP3 SONG TO MYSQL
-# ==========================================
 @app.post("/api/songs/upload")
 async def upload_song(
     file: UploadFile = File(...),
@@ -449,10 +424,6 @@ async def upload_song(
             connection.close()
 
 
-# ==========================================
-# STREAM / PLAY UPLOADED AUDIO
-# SUPPORTS HTTP RANGE REQUESTS
-# ==========================================
 @app.get("/api/songs/{song_id}/audio")
 def stream_song(
     song_id: int,
@@ -596,9 +567,6 @@ def stream_song(
             connection.close()
 
 
-# ==========================================
-# GET SINGLE SONG BY ID
-# ==========================================
 @app.get("/api/songs/{song_id}")
 def get_song(song_id: int):
 
@@ -659,9 +627,6 @@ def get_song(song_id: int):
             connection.close()
 
 
-# ==========================================
-# GET LIKED SONGS
-# ==========================================
 @app.get("/api/liked-songs")
 def get_liked_songs(user_id: str = ""):
 
@@ -707,9 +672,6 @@ def get_liked_songs(user_id: str = ""):
             connection.close()
 
 
-# ==========================================
-# ADD LIKED SONG
-# ==========================================
 @app.post("/api/liked-songs")
 def add_liked_song(data: LikedSongRequest):
 
@@ -774,9 +736,6 @@ def add_liked_song(data: LikedSongRequest):
             connection.close()
 
 
-# ==========================================
-# REMOVE LIKED SONG
-# ==========================================
 @app.delete("/api/liked-songs/{song_id}")
 def remove_liked_song(
     song_id: int,
@@ -835,9 +794,6 @@ def remove_liked_song(
             connection.close()
 
 
-# ==========================================
-# GET RECENT SEARCHES PER ACCOUNT
-# ==========================================
 @app.get("/api/recent-searches")
 def get_recent_searches(user_id: str = ""):
 
@@ -887,9 +843,6 @@ def get_recent_searches(user_id: str = ""):
             connection.close()
 
 
-# ==========================================
-# SAVE RECENT SEARCH PER ACCOUNT
-# ==========================================
 @app.post("/api/recent-searches")
 def add_recent_search(data: RecentSearchRequest):
 
@@ -953,9 +906,6 @@ def add_recent_search(data: RecentSearchRequest):
             connection.close()
 
 
-# ==========================================
-# DELETE ONE RECENT SEARCH
-# ==========================================
 @app.delete("/api/recent-searches/{search_id}")
 def delete_recent_search(
     search_id: int,
@@ -1010,9 +960,6 @@ def delete_recent_search(
             connection.close()
 
 
-# ==========================================
-# CLEAR ALL RECENT SEARCHES FOR ONE ACCOUNT
-# ==========================================
 @app.delete("/api/recent-searches")
 def clear_recent_searches(user_id: str = ""):
 
@@ -1058,9 +1005,6 @@ def clear_recent_searches(user_id: str = ""):
             connection.close()
 
 
-# ==========================================
-# GET ALL PLAYLISTS OF ONE USER
-# ==========================================
 @app.get("/api/playlists")
 def get_playlists(user_id: str = ""):
 
@@ -1121,9 +1065,6 @@ def get_playlists(user_id: str = ""):
             connection.close()
 
 
-# ==========================================
-# CREATE PLAYLIST
-# ==========================================
 @app.post("/api/playlists")
 def create_playlist(data: PlaylistRequest):
 
@@ -1202,9 +1143,6 @@ def create_playlist(data: PlaylistRequest):
             connection.close()
 
 
-# ==========================================
-# RENAME PLAYLIST
-# ==========================================
 @app.put("/api/playlists/{playlist_id}")
 def rename_playlist(
     playlist_id: int,
@@ -1290,9 +1228,6 @@ def rename_playlist(
             connection.close()
 
 
-# ==========================================
-# DELETE PLAYLIST
-# ==========================================
 @app.delete("/api/playlists/{playlist_id}")
 def delete_playlist(
     playlist_id: int,
@@ -1348,9 +1283,6 @@ def delete_playlist(
             connection.close()
 
 
-# ==========================================
-# GET SONGS INSIDE A PLAYLIST
-# ==========================================
 @app.get("/api/playlists/{playlist_id}/songs")
 def get_playlist_songs(
     playlist_id: int,
@@ -1439,9 +1371,6 @@ def get_playlist_songs(
             connection.close()
 
 
-# ==========================================
-# ADD SONG TO PLAYLIST
-# ==========================================
 @app.post("/api/playlists/{playlist_id}/songs")
 def add_song_to_playlist(
     playlist_id: int,
@@ -1540,9 +1469,6 @@ def add_song_to_playlist(
             connection.close()
 
 
-# ==========================================
-# REMOVE SONG FROM PLAYLIST
-# ==========================================
 @app.delete("/api/playlists/{playlist_id}/songs/{song_id}")
 def remove_song_from_playlist(
     playlist_id: int,

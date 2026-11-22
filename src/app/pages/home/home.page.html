@@ -1,10 +1,6 @@
-
 <ion-content [fullscreen]="true">
   <div class="app-container">
 
-    <!-- ====================================== -->
-    <!-- HOME PAGE -->
-    <!-- ====================================== -->
     <section *ngIf="activeTab === 'home'">
 
       <header class="top-header">
@@ -36,7 +32,6 @@
         </div>
       </div>
 
-      <!-- QUICK ACCESS -->
       <div class="section-heading">
         <h2>Quick Access</h2>
       </div>
@@ -61,7 +56,6 @@
 
       </div>
 
-      <!-- RECENTLY PLAYED -->
       <div class="section-heading recently-heading">
         <div>
           <h2>Recently Played</h2>
@@ -115,7 +109,6 @@
         </button>
       </div>
 
-      <!-- START LISTENING -->
       <div class="start-listening-card">
         <div>
           <h2>Ready for some music?</h2>
@@ -130,10 +123,6 @@
 
     </section>
 
-
-    <!-- ====================================== -->
-    <!-- SEARCH PAGE -->
-    <!-- ====================================== -->
     <section *ngIf="activeTab === 'search'">
 
       <header class="top-header">
@@ -156,7 +145,6 @@
         <p>Search for songs and discover new music.</p>
       </div>
 
-      <!-- SEARCH INPUT -->
       <div class="search-box">
         <ion-icon name="search-outline"></ion-icon>
 
@@ -174,7 +162,6 @@
         </button>
       </div>
 
-      <!-- RECENT SEARCHES -->
       <div
         class="section-heading"
         *ngIf="recentSearches && recentSearches.length > 0">
@@ -218,7 +205,6 @@
 
       </div>
 
-      <!-- SEARCH RESULTS -->
       <div
         class="section-heading"
         *ngIf="searchResults && searchResults.length > 0">
@@ -276,7 +262,6 @@
 
       </div>
 
-      <!-- NO SEARCH RESULTS -->
       <div
         class="empty-state"
         *ngIf="searchText && searchResults && searchResults.length === 0">
@@ -287,7 +272,6 @@
 
       </div>
 
-      <!-- DEFAULT SEARCH MESSAGE -->
       <div
         class="search-placeholder"
         *ngIf="!searchText && (!searchResults || searchResults.length === 0)">
@@ -303,10 +287,6 @@
 
     </section>
 
-
-    <!-- ====================================== -->
-    <!-- LIBRARY PAGE -->
-    <!-- ====================================== -->
     <section *ngIf="activeTab === 'library'">
 
       <header class="top-header">
@@ -326,7 +306,6 @@
         </button>
       </header>
 
-      <!-- LIBRARY FILTERS -->
       <div class="library-filter">
 
         <button
@@ -345,8 +324,6 @@
 
       </div>
 
-
-      <!-- PLAYLISTS VIEW -->
       <div *ngIf="libraryFilter === 'playlists' && !selectedPlaylist">
 
         <div class="section-heading">
@@ -365,7 +342,6 @@
           </button>
         </div>
 
-        <!-- LIKED SONGS CARD -->
         <div
           class="liked-songs-card"
           (click)="openLikedSongs()">
@@ -386,7 +362,6 @@
 
         </div>
 
-        <!-- CREATED PLAYLISTS -->
         <div
           class="playlist-list"
           *ngIf="playlists && playlists.length > 0">
@@ -424,7 +399,6 @@
 
         </div>
 
-        <!-- EMPTY PLAYLISTS -->
         <div
           class="empty-state"
           *ngIf="!playlists || playlists.length === 0">
@@ -447,8 +421,6 @@
 
       </div>
 
-
-      <!-- LIKED SONGS VIEW -->
       <div *ngIf="libraryFilter === 'liked' && !selectedPlaylist">
 
         <div class="liked-songs-header">
@@ -522,8 +494,6 @@
 
       </div>
 
-
-      <!-- SELECTED PLAYLIST DETAILS -->
       <div
         class="selected-playlist-section"
         *ngIf="selectedPlaylist">
@@ -628,10 +598,6 @@
 
     </section>
 
-
-    <!-- ====================================== -->
-    <!-- CREATE PLAYLIST PAGE -->
-    <!-- ====================================== -->
     <section *ngIf="activeTab === 'create'">
 
       <header class="top-header">
@@ -698,17 +664,12 @@
 
   </div>
 
-
-  <!-- ====================================== -->
-  <!-- PROFILE DRAWER OVERLAY -->
-  <!-- ====================================== -->
   <div
     class="drawer-overlay"
     *ngIf="isDrawerOpen"
     (click)="closeDrawer()">
   </div>
 
-  <!-- PROFILE DRAWER -->
   <div
     class="profile-drawer"
     [class.open]="isDrawerOpen">
@@ -820,10 +781,6 @@
 
   </div>
 
-
-  <!-- ====================================== -->
-  <!-- MINI MUSIC PLAYER -->
-  <!-- ====================================== -->
   <div
     class="mini-player"
     *ngIf="currentTrack"
@@ -914,7 +871,6 @@
 
     </div>
 
-    <!-- MINI PLAYER PROGRESS -->
     <div class="mini-player-progress">
 
       <span>{{ formatMusicTime(currentTime) }}</span>
@@ -932,10 +888,6 @@
 
   </div>
 
-
-  <!-- ====================================== -->
-  <!-- FULL SCREEN MUSIC PLAYER -->
-  <!-- ====================================== -->
   <div
     class="full-player-overlay"
     *ngIf="isPlayerExpanded && currentTrack">
@@ -967,7 +919,6 @@
 
       </div>
 
-      <!-- FULL PLAYER ARTWORK -->
       <div class="full-player-artwork">
 
         <img
@@ -985,7 +936,6 @@
 
       </div>
 
-      <!-- TRACK INFORMATION -->
       <div class="full-player-track-info">
 
         <div>
@@ -995,7 +945,6 @@
 
       </div>
 
-      <!-- FULL PLAYER PROGRESS -->
       <div class="full-player-progress">
 
         <input
@@ -1014,7 +963,6 @@
 
       </div>
 
-      <!-- FULL PLAYER CONTROLS -->
       <div class="full-player-controls">
 
         <button
@@ -1067,7 +1015,6 @@
 
       </div>
 
-      <!-- VOLUME CONTROL -->
       <div class="full-player-volume">
 
         <ion-icon name="volume-high"></ion-icon>
@@ -1091,10 +1038,6 @@
 
   </div>
 
-
-  <!-- ====================================== -->
-  <!-- BOTTOM NAVIGATION -->
-  <!-- ====================================== -->
   <div class="bottom-navigation">
 
     <button

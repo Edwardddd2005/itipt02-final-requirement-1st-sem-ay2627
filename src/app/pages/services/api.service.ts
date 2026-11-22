@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
@@ -36,14 +35,8 @@ export interface RecentSearch {
 })
 export class ApiService {
 
-  // Automatically uses the correct API URL
-  // Local URL during development
-  // Cloudflare URL during production
   private readonly apiUrl = environment.apiUrl;
 
-  // ==========================================
-  // UPLOAD LOCAL MP3 FILE TO MYSQL DATABASE
-  // ==========================================
   async uploadSong(
     file: File,
     title: string,
@@ -107,16 +100,10 @@ export class ApiService {
     return result as SaveSongResponse;
   }
 
-  // ==========================================
-  // GET AUDIO URL FROM DATABASE
-  // ==========================================
   getSongAudioUrl(songId: number): string {
     return `${this.apiUrl}/songs/${songId}/audio`;
   }
 
-  // ==========================================
-  // GET SAVED SONGS FROM MYSQL DATABASE
-  // ==========================================
   async getSongs(search: string = ''): Promise<SavedSong[]> {
 
     const response = await fetch(
@@ -141,9 +128,6 @@ export class ApiService {
     })) as SavedSong[];
   }
 
-  // ==========================================
-  // GET RECENT SEARCHES FOR SPECIFIC ACCOUNT
-  // ==========================================
   async getRecentSearches(userId: number): Promise<RecentSearch[]> {
 
     if (!userId) {
@@ -165,9 +149,6 @@ export class ApiService {
     return (result.recent_searches || []) as RecentSearch[];
   }
 
-  // ==========================================
-  // SAVE RECENT SEARCH FOR SPECIFIC ACCOUNT
-  // ==========================================
   async addRecentSearch(
     userId: number,
     searchQuery: string
@@ -200,9 +181,6 @@ export class ApiService {
     }
   }
 
-  // ==========================================
-  // DELETE ONE RECENT SEARCH FOR SPECIFIC ACCOUNT
-  // ==========================================
   async deleteRecentSearch(
     searchId: number,
     userId: number
@@ -224,9 +202,6 @@ export class ApiService {
     }
   }
 
-  // ==========================================
-  // CLEAR ALL RECENT SEARCHES FOR SPECIFIC ACCOUNT
-  // ==========================================
   async clearRecentSearches(userId: number): Promise<void> {
 
     if (!userId) {

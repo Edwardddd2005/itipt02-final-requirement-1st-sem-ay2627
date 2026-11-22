@@ -1,3 +1,4 @@
+
 import { environment } from '../../../environments/environment';
 import {
   Component,
@@ -120,7 +121,6 @@ export class HomePage implements OnDestroy {
 
   activeTab = 'home';
 
-  // PROFILE DRAWER
   isDrawerOpen = false;
 
   playlistName = '';
@@ -134,7 +134,6 @@ export class HomePage implements OnDestroy {
   libraryFilter = 'playlists';
   sortNewestFirst = true;
 
-  // PLAYLIST DATABASE
   playlists: Playlist[] = [];
 
   selectedPlaylist: Playlist | null = null;
@@ -153,14 +152,11 @@ export class HomePage implements OnDestroy {
   searchPerformed = false;
   searchError = '';
 
-  // RECENT SEARCHES
   recentSearches: RecentSearch[] = [];
   isLoadingRecentSearches = false;
 
-  // RECENTLY PLAYED SONGS
   recentPlayedSongs: Song[] = [];
 
-  // UPLOAD MUSIC
   uploadTitle = '';
   uploadArtist = '';
   uploadAlbum = '';
@@ -172,7 +168,6 @@ export class HomePage implements OnDestroy {
   uploadError = '';
   uploadSuccess = '';
 
-  // MUSIC PLAYER AND QUEUE
   currentTrack: PlayerTrack | null = null;
   trackQueue: PlayerTrack[] = [];
 
@@ -189,7 +184,6 @@ export class HomePage implements OnDestroy {
 
   volume = 0.8;
 
-  // FULL-SCREEN PLAYER STATE
   isPlayerExpanded = false;
 
   private audioPlayer: HTMLAudioElement | null = null;
@@ -265,10 +259,6 @@ export class HomePage implements OnDestroy {
     return 'evening';
   }
 
-  // ==========================================
-  // LOAD LOGGED-IN USER
-  // ==========================================
-
   loadUser() {
 
     const savedUser = localStorage.getItem('melodifyUser');
@@ -329,10 +319,6 @@ export class HomePage implements OnDestroy {
       console.error('Unable to read user information:', error);
     }
   }
-
-  // ==========================================
-  // RECENTLY PLAYED SONGS
-  // ==========================================
 
   private getRecentPlayedStorageKey(): string | null {
 
@@ -458,10 +444,6 @@ export class HomePage implements OnDestroy {
 
     this.playSong(song);
   }
-
-  // ==========================================
-  // RECENT SEARCHES
-  // ==========================================
 
   async loadRecentSearches() {
 
@@ -599,10 +581,6 @@ export class HomePage implements OnDestroy {
     }
   }
 
-  // ==========================================
-  // PROFILE DRAWER CONTROLS
-  // ==========================================
-
   openProfile() {
 
     this.isDrawerOpen = true;
@@ -653,10 +631,6 @@ export class HomePage implements OnDestroy {
       'and save your favorite songs in one place.'
     );
   }
-
-  // ==========================================
-  // DATABASE MUSIC SEARCH
-  // ==========================================
 
   async searchDatabaseSongs(value: string) {
 
@@ -769,10 +743,6 @@ export class HomePage implements OnDestroy {
 
     this.searchRequestNumber++;
   }
-
-  // ==========================================
-  // UPLOAD MUSIC TO MYSQL DATABASE
-  // ==========================================
 
   onAudioFileSelected(event: Event) {
 
@@ -930,10 +900,6 @@ export class HomePage implements OnDestroy {
     }
   }
 
-  // ==========================================
-  // PLAYLIST DATABASE - LOAD
-  // ==========================================
-
   get sortedPlaylists(): Playlist[] {
 
     const result = [...this.playlists];
@@ -1013,10 +979,6 @@ export class HomePage implements OnDestroy {
     }
   }
 
-  // ==========================================
-  // LOAD SONGS INSIDE A PLAYLIST
-  // ==========================================
-
   async loadPlaylistSongs(playlistId: number) {
 
     if (this.userId === null) return;
@@ -1079,10 +1041,6 @@ export class HomePage implements OnDestroy {
       this.cdr.detectChanges();
     }
   }
-
-  // ==========================================
-  // CREATE PLAYLIST
-  // ==========================================
 
   async addPlaylist() {
 
@@ -1157,10 +1115,6 @@ export class HomePage implements OnDestroy {
     }
   }
 
-  // ==========================================
-  // EDIT PLAYLIST
-  // ==========================================
-
   editPlaylist(id: number) {
 
     const action = prompt(
@@ -1176,10 +1130,6 @@ export class HomePage implements OnDestroy {
       this.deletePlaylist(id);
     }
   }
-
-  // ==========================================
-  // RENAME PLAYLIST
-  // ==========================================
 
   async renamePlaylist(id: number) {
 
@@ -1253,10 +1203,6 @@ export class HomePage implements OnDestroy {
     }
   }
 
-  // ==========================================
-  // DELETE PLAYLIST
-  // ==========================================
-
   async deletePlaylist(id: number) {
 
     if (this.userId === null) return;
@@ -1302,10 +1248,6 @@ export class HomePage implements OnDestroy {
     }
   }
 
-  // ==========================================
-  // OPEN PLAYLIST
-  // ==========================================
-
   async openPlaylist(playlist: Playlist | string) {
 
     if (playlist === 'Liked Songs') {
@@ -1326,18 +1268,10 @@ export class HomePage implements OnDestroy {
     await this.loadPlaylistSongs(selected.playlist_id);
   }
 
-  // ==========================================
-  // CLOSE PLAYLIST DETAILS
-  // ==========================================
-
   closePlaylistDetails() {
 
     this.selectedPlaylist = null;
   }
-
-  // ==========================================
-  // ADD SONG TO PLAYLIST
-  // ==========================================
 
   async addSongToPlaylist(id: number) {
 
@@ -1382,10 +1316,6 @@ export class HomePage implements OnDestroy {
       selectedSong
     );
   }
-
-  // ==========================================
-  // ADD SONG TO SELECTED PLAYLIST
-  // ==========================================
 
   async addSongToPlaylistById(
     playlistId: number,
@@ -1442,10 +1372,6 @@ export class HomePage implements OnDestroy {
     }
   }
 
-  // ==========================================
-  // CHOOSE PLAYLIST FROM SEARCH
-  // ==========================================
-
   async choosePlaylistForSong(song: Song) {
 
     if (this.playlists.length === 0) {
@@ -1483,10 +1409,6 @@ export class HomePage implements OnDestroy {
       song
     );
   }
-
-  // ==========================================
-  // REMOVE SONG FROM PLAYLIST
-  // ==========================================
 
   async removeSongFromPlaylist(id: number) {
 
@@ -1578,10 +1500,6 @@ export class HomePage implements OnDestroy {
     }
   }
 
-  // ==========================================
-  // PLAY SONG FROM PLAYLIST
-  // ==========================================
-
   async playPlaylistSong(song: Song) {
 
     if (!song.audio_url) {
@@ -1630,10 +1548,6 @@ export class HomePage implements OnDestroy {
     await this.playTrack(selectedTrack);
   }
 
-  // ==========================================
-  // CHANGE PAGE
-  // ==========================================
-
   changeTab(tab: string) {
 
     this.activeTab = tab;
@@ -1648,10 +1562,6 @@ export class HomePage implements OnDestroy {
       this.loadPlaylists();
     }
   }
-
-  // ==========================================
-  // LOGOUT
-  // ==========================================
 
   logout() {
 
@@ -1684,10 +1594,6 @@ export class HomePage implements OnDestroy {
     window.location.href = '/login';
   }
 
-  // ==========================================
-  // CATEGORY
-  // ==========================================
-
   selectCategory(category: string) {
 
     if (category === 'Favorites') {
@@ -1703,10 +1609,6 @@ export class HomePage implements OnDestroy {
 
     alert('Search for a song related to ' + category + '.');
   }
-
-  // ==========================================
-  // LIBRARY FILTER
-  // ==========================================
 
   setLibraryFilter(filter: string) {
 
@@ -1730,10 +1632,6 @@ export class HomePage implements OnDestroy {
 
     this.sortNewestFirst = !this.sortNewestFirst;
   }
-
-  // ==========================================
-  // LIKED SONGS
-  // ==========================================
 
   async loadLikedSongs() {
 
@@ -1978,10 +1876,6 @@ export class HomePage implements OnDestroy {
     }
   }
 
-    // ==========================================
-  // MUSIC PLAYER
-  // ==========================================
-
   async playSong(song: Song) {
 
     if (!song.audio_url) {
@@ -2012,10 +1906,6 @@ export class HomePage implements OnDestroy {
 
     await this.playTrack(track);
   }
-
-  // ==========================================
-  // PREPARE MUSIC QUEUE
-  // ==========================================
 
   private async prepareTrackQueue(selectedSong: Song) {
 
@@ -2076,10 +1966,6 @@ export class HomePage implements OnDestroy {
     }
   }
 
-  // ==========================================
-  // RESOLVE AUDIO URL
-  // ==========================================
-
   private resolveAudioUrl(audioUrl?: string): string {
 
     if (!audioUrl) return '';
@@ -2088,14 +1974,12 @@ export class HomePage implements OnDestroy {
 
     const apiOrigin = this.apiUrl.replace(/\/api\/?$/, '');
 
-    // Handle absolute URLs
     if (/^https?:\/\//i.test(value)) {
 
       try {
 
         const parsedUrl = new URL(value);
 
-        // Replace old localhost URLs with the production backend
         if (
           parsedUrl.hostname === 'localhost' ||
           parsedUrl.hostname === '127.0.0.1'
@@ -2114,13 +1998,8 @@ export class HomePage implements OnDestroy {
       }
     }
 
-    // Handle relative URLs
     return `${apiOrigin}/${value.replace(/^\/+/, '')}`;
   }
-
-  // ==========================================
-  // CONVERT DATABASE SONG TO PLAYER TRACK
-  // ==========================================
 
   private toPlayerTrack(song: Song): PlayerTrack {
 
@@ -2143,9 +2022,6 @@ export class HomePage implements OnDestroy {
       raw: song
     };
   }
-  // ==========================================
-  // UPDATE PLAYER PROGRESS
-  // ==========================================
 
   private updatePlayerProgress(player: HTMLAudioElement) {
 
@@ -2171,10 +2047,6 @@ export class HomePage implements OnDestroy {
       this.cdr.detectChanges();
     });
   }
-
-  // ==========================================
-  // PLAY TRACK
-  // ==========================================
 
   private async playTrack(
     track: PlayerTrack,
@@ -2324,10 +2196,6 @@ export class HomePage implements OnDestroy {
     }
   }
 
-  // ==========================================
-  // FULL-SCREEN PLAYER CONTROLS
-  // ==========================================
-
   openFullPlayer() {
 
     if (!this.currentTrack) return;
@@ -2341,10 +2209,6 @@ export class HomePage implements OnDestroy {
 
     this.isPlayerExpanded = false;
   }
-
-  // ==========================================
-  // NEXT TRACK
-  // ==========================================
 
   async nextTrack() {
 
@@ -2438,10 +2302,6 @@ export class HomePage implements OnDestroy {
     await this.playTrack(next, true);
   }
 
-  // ==========================================
-  // PREVIOUS TRACK
-  // ==========================================
-
   async previousTrack() {
 
     if (!this.audioPlayer || !this.currentTrack) return;
@@ -2495,10 +2355,6 @@ export class HomePage implements OnDestroy {
     await this.playTrack(previous, true);
   }
 
-  // ==========================================
-  // SHUFFLE ON/OFF
-  // ==========================================
-
   toggleShuffle() {
 
     this.isShuffleEnabled = !this.isShuffleEnabled;
@@ -2509,10 +2365,6 @@ export class HomePage implements OnDestroy {
         : 'Shuffle Disabled'
     );
   }
-
-  // ==========================================
-  // REPEAT CYCLE
-  // ==========================================
 
   toggleRepeat() {
 
@@ -2529,10 +2381,6 @@ export class HomePage implements OnDestroy {
       this.repeatMode = 'off';
     }
   }
-
-  // ==========================================
-  // AUTOMATIC NEXT WHEN CURRENT TRACK ENDS
-  // ==========================================
 
   async handleTrackEnded() {
 
@@ -2584,10 +2432,6 @@ export class HomePage implements OnDestroy {
     this.cdr.detectChanges();
   }
 
-  // ==========================================
-  // PLAY / PAUSE
-  // ==========================================
-
   async toggleExternalPlayback() {
 
     if (!this.audioPlayer || !this.currentTrack) return;
@@ -2626,10 +2470,6 @@ export class HomePage implements OnDestroy {
     }
   }
 
-  // ==========================================
-  // SEEK MUSIC
-  // ==========================================
-
   seekMusic(event: Event) {
 
     const input = event.target as HTMLInputElement;
@@ -2660,10 +2500,6 @@ export class HomePage implements OnDestroy {
     this.cdr.detectChanges();
   }
 
-  // ==========================================
-  // CHANGE MUSIC VOLUME
-  // ==========================================
-
   changeMusicVolume(event: Event) {
 
     const input = event.target as HTMLInputElement;
@@ -2680,10 +2516,6 @@ export class HomePage implements OnDestroy {
     }
   }
 
-  // ==========================================
-  // FORMAT MUSIC TIME
-  // ==========================================
-
   formatMusicTime(seconds: number): string {
 
     if (!Number.isFinite(seconds) || seconds < 0) {
@@ -2697,10 +2529,6 @@ export class HomePage implements OnDestroy {
 
     return `${minutes}:${String(remainingSeconds).padStart(2, '0')}`;
   }
-
-  // ==========================================
-  // STOP MUSIC PLAYER
-  // ==========================================
 
   stopExternalMusic(clearQueue = true) {
 
@@ -2755,10 +2583,6 @@ export class HomePage implements OnDestroy {
 
     this.stopExternalMusic();
   }
-
-  // ==========================================
-  // OTHER FUNCTIONS
-  // ==========================================
 
   openArtist(artistName: string) {
 
