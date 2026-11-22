@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
+import { environment } from '../../../environments/environment';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -17,12 +19,11 @@ export class RegisterPage {
   email = '';
   password = '';
 
-  // FASTAPI BACKEND URL
-  private apiUrl = 'http://127.0.0.1:8000/api';
+  // USE ENVIRONMENT API URL
+  private apiUrl = environment.apiUrl;
 
   async register() {
 
-    // CHECK EMPTY FIELDS
     if (
       !this.username.trim() ||
       !this.email.trim() ||
@@ -52,7 +53,12 @@ export class RegisterPage {
       const result = await response.json();
 
       if (!response.ok) {
-        alert(result.message || 'Hindi nagtagumpay ang registration.');
+        alert(
+          result.message ||
+          result.detail ||
+          'Hindi nagtagumpay ang registration.'
+        );
+
         console.error('Registration response:', result);
         return;
       }
@@ -64,7 +70,7 @@ export class RegisterPage {
       console.error('Registration error:', error);
 
       alert(
-        'Hindi makakonekta sa FastAPI backend. Tiyaking tumatakbo ang Uvicorn sa port 8000.'
+        'Hindi makakonekta sa FastAPI backend. Tiyaking tumatakbo ang Uvicorn at Cloudflare Tunnel.'
       );
 
     }
