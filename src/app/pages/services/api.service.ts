@@ -1,5 +1,6 @@
 
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 export interface SavedSong {
   song_id: number;
@@ -35,8 +36,10 @@ export interface RecentSearch {
 })
 export class ApiService {
 
-  private readonly apiUrl = 'http://127.0.0.1:8000/api';
-
+  // Automatically uses the correct API URL
+  // Local URL during development
+  // Cloudflare URL during production
+  private readonly apiUrl = environment.apiUrl;
 
   // ==========================================
   // UPLOAD LOCAL MP3 FILE TO MYSQL DATABASE
@@ -104,14 +107,12 @@ export class ApiService {
     return result as SaveSongResponse;
   }
 
-
   // ==========================================
   // GET AUDIO URL FROM DATABASE
   // ==========================================
   getSongAudioUrl(songId: number): string {
     return `${this.apiUrl}/songs/${songId}/audio`;
   }
-
 
   // ==========================================
   // GET SAVED SONGS FROM MYSQL DATABASE
@@ -140,7 +141,6 @@ export class ApiService {
     })) as SavedSong[];
   }
 
-
   // ==========================================
   // GET RECENT SEARCHES FOR SPECIFIC ACCOUNT
   // ==========================================
@@ -164,7 +164,6 @@ export class ApiService {
 
     return (result.recent_searches || []) as RecentSearch[];
   }
-
 
   // ==========================================
   // SAVE RECENT SEARCH FOR SPECIFIC ACCOUNT
@@ -201,7 +200,6 @@ export class ApiService {
     }
   }
 
-
   // ==========================================
   // DELETE ONE RECENT SEARCH FOR SPECIFIC ACCOUNT
   // ==========================================
@@ -225,7 +223,6 @@ export class ApiService {
       );
     }
   }
-
 
   // ==========================================
   // CLEAR ALL RECENT SEARCHES FOR SPECIFIC ACCOUNT
