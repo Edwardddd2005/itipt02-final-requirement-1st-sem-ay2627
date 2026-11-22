@@ -1978,7 +1978,7 @@ export class HomePage implements OnDestroy {
     }
   }
 
-  // ==========================================
+    // ==========================================
   // MUSIC PLAYER
   // ==========================================
 
@@ -2076,6 +2076,52 @@ export class HomePage implements OnDestroy {
     }
   }
 
+  // ==========================================
+  // RESOLVE AUDIO URL
+  // ==========================================
+
+  private resolveAudioUrl(audioUrl?: string): string {
+
+    if (!audioUrl) return '';
+
+    const value = audioUrl.trim();
+
+    const apiOrigin = this.apiUrl.replace(/\/api\/?$/, '');
+
+    // Handle absolute URLs
+    if (/^https?:\/\//i.test(value)) {
+
+      try {
+
+        const parsedUrl = new URL(value);
+
+        // Replace old localhost URLs with the production backend
+        if (
+          parsedUrl.hostname === 'localhost' ||
+          parsedUrl.hostname === '127.0.0.1'
+        ) {
+
+          return `${apiOrigin}${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`;
+        }
+
+        return value;
+
+      } catch (error) {
+
+        console.error('Invalid audio URL:', error);
+
+        return '';
+      }
+    }
+
+    // Handle relative URLs
+    return `${apiOrigin}/${value.replace(/^\/+/, '')}`;
+  }
+
+  // ==========================================
+  // CONVERT DATABASE SONG TO PLAYER TRACK
+  // ==========================================
+
   private toPlayerTrack(song: Song): PlayerTrack {
 
     return {
@@ -2088,13 +2134,7 @@ export class HomePage implements OnDestroy {
 
       imageUrl: '',
 
-      audioUrl: song.audio_url
-        ? (
-            song.audio_url.startsWith('/')
-              ? `http://127.0.0.1:8000${song.audio_url}`
-              : song.audio_url
-          )
-        : '',
+      audioUrl: this.resolveAudioUrl(song.audio_url),
 
       sourceUrl: '',
 
@@ -2103,7 +2143,6 @@ export class HomePage implements OnDestroy {
       raw: song
     };
   }
-
   // ==========================================
   // UPDATE PLAYER PROGRESS
   // ==========================================
