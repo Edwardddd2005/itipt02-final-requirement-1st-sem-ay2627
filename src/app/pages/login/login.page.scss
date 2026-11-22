@@ -1,0 +1,71 @@
+
+.login-content {
+  --background: #121212;
+}
+
+.login-container {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px 24px;
+  max-width: 450px;
+  margin: auto;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.logo ion-icon {
+  font-size: 65px;
+  color: #a855f7;
+}
+
+.logo h1 {
+  color: white;
+  font-size: 36px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.logo p {
+  color: #aaaaaa;
+}
+
+.login-form h2 {
+  color: white;
+  font-size: 26px;
+}
+
+.login-form p {
+  color: #aaaaaa;
+}
+
+ion-item {
+  --background: #242424;
+  --color: white;
+  --border-color: #444;
+  margin-bottom: 15px;
+  border-radius: 10px;
+}
+
+.login-button {
+  --background: #a855f7;
+  --color: white;
+  margin-top: 25px;
+  height: 48px;
+  font-weight: bold;
+}
+
+.register-text {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.register-text a {
+  color: #a855f7;
+  text-decoration: none;
+  font-weight: bold;
+}

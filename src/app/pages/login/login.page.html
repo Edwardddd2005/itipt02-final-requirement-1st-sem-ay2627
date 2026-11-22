@@ -1,0 +1,51 @@
+<ion-content class="login-content">
+  <div class="login-container">
+
+    <div class="logo">
+      <ion-icon name="musical-notes"></ion-icon>
+      <h1>Melodify</h1>
+      <p>Your Music, Your Space</p>
+    </div>
+
+    <div class="login-form">
+      <h2>Welcome Back!</h2>
+      <p>Sign in to continue listening.</p>
+
+      <form (ngSubmit)="login()">
+        <ion-item>
+          <ion-input
+            type="email"
+            name="email"
+            label="Email"
+            labelPlacement="floating"
+            placeholder="Enter your email"
+            [(ngModel)]="email"
+            required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            type="password"
+            name="password"
+            label="Password"
+            labelPlacement="floating"
+            placeholder="Enter your password"
+            [(ngModel)]="password"
+            required>
+          </ion-input>
+        </ion-item>
+
+        <ion-button expand="block" class="login-button" type="submit">
+          Login
+        </ion-button>
+      </form>
+
+      <p class="register-text">
+        Don't have an account?
+        <a routerLink="/register">Register</a>
+      </p>
+    </div>
+
+  </div>
+</ion-content>

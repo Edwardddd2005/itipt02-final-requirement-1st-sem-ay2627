@@ -1,0 +1,7 @@
+{
+  "name": "melodify",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

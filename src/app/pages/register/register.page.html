@@ -1,0 +1,46 @@
+
+<div class="register-container">
+
+  <div class="logo">
+    <h1>♫ Melodify</h1>
+    <p>Create your account and enjoy your music.</p>
+  </div>
+
+  <div class="register-form">
+    <h2>Create Account</h2>
+
+    <form (ngSubmit)="register()">
+      <input
+        type="text"
+        name="username"
+        placeholder="Username"
+        [(ngModel)]="username"
+        required
+      >
+
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        [(ngModel)]="email"
+        required
+      >
+
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        [(ngModel)]="password"
+        required
+      >
+
+      <button type="submit">Register</button>
+    </form>
+
+    <p class="login-text">
+      Already have an account?
+      <a routerLink="/login">Login</a>
+    </p>
+  </div>
+
+</div>

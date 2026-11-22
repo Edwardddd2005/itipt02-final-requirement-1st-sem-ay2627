@@ -1,0 +1,1138 @@
+
+<ion-content [fullscreen]="true">
+  <div class="app-container">
+
+    <!-- ====================================== -->
+    <!-- HOME PAGE -->
+    <!-- ====================================== -->
+    <section *ngIf="activeTab === 'home'">
+
+      <header class="top-header">
+        <button class="profile-circle" (click)="openProfile()">
+          {{ userInitial }}
+        </button>
+
+        <h1>Good {{ greeting }}, {{ userName }}</h1>
+
+        <button class="header-icon" (click)="changeTab('search')">
+          <ion-icon name="search-outline"></ion-icon>
+        </button>
+      </header>
+
+      <div class="featured-card">
+        <div class="featured-content">
+          <span class="featured-label">YOUR MUSIC SPACE</span>
+          <h1>Welcome to Melodify!</h1>
+          <p>Your music, your mood.</p>
+
+          <button class="primary-button" (click)="changeTab('search')">
+            <ion-icon name="headset-outline"></ion-icon>
+            Discover Music
+          </button>
+        </div>
+
+        <div class="featured-decoration">
+          <ion-icon name="musical-notes"></ion-icon>
+        </div>
+      </div>
+
+      <!-- QUICK ACCESS -->
+      <div class="section-heading">
+        <h2>Quick Access</h2>
+      </div>
+
+      <div class="quick-cards">
+
+        <div class="quick-card" (click)="changeTab('search')">
+          <div class="quick-card-icon">
+            <ion-icon name="search-outline"></ion-icon>
+          </div>
+          <h3>Discover Music</h3>
+          <p>Find your next favorite song</p>
+        </div>
+
+        <div class="quick-card" (click)="changeTab('library')">
+          <div class="quick-card-icon">
+            <ion-icon name="library-outline"></ion-icon>
+          </div>
+          <h3>Your Library</h3>
+          <p>Explore your saved music</p>
+        </div>
+
+      </div>
+
+      <!-- RECENTLY PLAYED -->
+      <div class="section-heading recently-heading">
+        <div>
+          <h2>Recently Played</h2>
+          <p>Listen to your recent favorites</p>
+        </div>
+
+        <button
+          class="text-button"
+          *ngIf="recentPlayedSongs && recentPlayedSongs.length > 0"
+          (click)="clearRecentPlayedSongs()">
+          Clear
+        </button>
+      </div>
+
+      <div
+        class="recently-played-list"
+        *ngIf="recentPlayedSongs && recentPlayedSongs.length > 0">
+
+        <div
+          class="recently-played-item"
+          *ngFor="let song of recentPlayedSongs"
+          (click)="playRecentSong(song)">
+
+          <div class="recent-song-icon">
+            <ion-icon name="musical-notes"></ion-icon>
+          </div>
+
+          <div class="recent-song-info">
+            <h4>{{ song.title }}</h4>
+            <p>{{ song.artist }}</p>
+          </div>
+
+          <button class="play-small-button">
+            <ion-icon name="play"></ion-icon>
+          </button>
+
+        </div>
+
+      </div>
+
+      <div
+        class="empty-state"
+        *ngIf="!recentPlayedSongs || recentPlayedSongs.length === 0">
+
+        <ion-icon name="headset-outline"></ion-icon>
+        <h3>Nothing played yet</h3>
+        <p>Your recently played songs will appear here.</p>
+
+        <button class="primary-button" (click)="changeTab('search')">
+          Start Listening
+        </button>
+      </div>
+
+      <!-- START LISTENING -->
+      <div class="start-listening-card">
+        <div>
+          <h2>Ready for some music?</h2>
+          <p>Create your own playlist and organize your favorite songs.</p>
+        </div>
+
+        <button (click)="changeTab('create')">
+          <ion-icon name="add-circle-outline"></ion-icon>
+          Create Playlist
+        </button>
+      </div>
+
+    </section>
+
+
+    <!-- ====================================== -->
+    <!-- SEARCH PAGE -->
+    <!-- ====================================== -->
+    <section *ngIf="activeTab === 'search'">
+
+      <header class="top-header">
+        <button class="profile-circle" (click)="openProfile()">
+          {{ userInitial }}
+        </button>
+
+        <div class="header-title">
+          <h1>Search</h1>
+          <p>Find music you love</p>
+        </div>
+
+        <button class="header-icon" (click)="changeTab('library')">
+          <ion-icon name="library-outline"></ion-icon>
+        </button>
+      </header>
+
+      <div class="search-intro">
+        <h2>What do you want to hear?</h2>
+        <p>Search for songs and discover new music.</p>
+      </div>
+
+      <!-- SEARCH INPUT -->
+      <div class="search-box">
+        <ion-icon name="search-outline"></ion-icon>
+
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          placeholder="Search songs or artists..."
+          (keyup.enter)="submitSearch()"
+          (ngModelChange)="searchDatabaseSongs($event)">
+
+        <button
+          *ngIf="searchText"
+          (click)="clearSearch()">
+          <ion-icon name="close-circle-outline"></ion-icon>
+        </button>
+      </div>
+
+      <!-- RECENT SEARCHES -->
+      <div
+        class="section-heading"
+        *ngIf="recentSearches && recentSearches.length > 0">
+
+        <div>
+          <h2>Recent Searches</h2>
+          <p>Your previous searches</p>
+        </div>
+
+        <button
+          class="text-button"
+          (click)="clearRecentSearches()">
+          Clear All
+        </button>
+      </div>
+
+      <div
+        class="recent-search-list"
+        *ngIf="recentSearches && recentSearches.length > 0">
+
+        <div
+          class="recent-search-item"
+          *ngFor="let recent of recentSearches">
+
+          <button
+            class="recent-search-content"
+            (click)="searchFromRecent(recent.search_query)">
+
+            <ion-icon name="time-outline"></ion-icon>
+            <span>{{ recent.search_query }}</span>
+
+          </button>
+
+          <button
+            class="remove-recent-button"
+            (click)="removeRecentSearch(recent.id)">
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- SEARCH RESULTS -->
+      <div
+        class="section-heading"
+        *ngIf="searchResults && searchResults.length > 0">
+
+        <div>
+          <h2>Search Results</h2>
+          <p>{{ searchResults.length }} song(s) found</p>
+        </div>
+
+      </div>
+
+      <div
+        class="search-results"
+        *ngIf="searchResults && searchResults.length > 0">
+
+        <div
+          class="search-result-item"
+          *ngFor="let song of searchResults">
+
+          <div
+            class="song-cover"
+            [style.background]="song.color || '#282828'"
+            (click)="playSong(song)">
+
+            <ion-icon name="musical-notes"></ion-icon>
+          </div>
+
+          <div class="song-details" (click)="playSong(song)">
+            <h4>{{ song.title }}</h4>
+            <p>{{ song.artist }}</p>
+          </div>
+
+          <button
+            class="song-action-button"
+            title="Like song"
+            (click)="addSongToLibrary(song)">
+            <ion-icon name="heart-outline"></ion-icon>
+          </button>
+
+          <button
+            class="song-action-button"
+            title="Add to playlist"
+            (click)="choosePlaylistForSong(song)">
+            <ion-icon name="add-circle-outline"></ion-icon>
+          </button>
+
+          <button
+            class="song-play-button"
+            title="Play song"
+            (click)="playSong(song)">
+            <ion-icon name="play"></ion-icon>
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- NO SEARCH RESULTS -->
+      <div
+        class="empty-state"
+        *ngIf="searchText && searchResults && searchResults.length === 0">
+
+        <ion-icon name="search-outline"></ion-icon>
+        <h3>No songs found</h3>
+        <p>Try searching for another song or artist.</p>
+
+      </div>
+
+      <!-- DEFAULT SEARCH MESSAGE -->
+      <div
+        class="search-placeholder"
+        *ngIf="!searchText && (!searchResults || searchResults.length === 0)">
+
+        <div class="search-placeholder-icon">
+          <ion-icon name="musical-notes"></ion-icon>
+        </div>
+
+        <h3>Discover your music</h3>
+        <p>Search for your favorite songs and artists.</p>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================== -->
+    <!-- LIBRARY PAGE -->
+    <!-- ====================================== -->
+    <section *ngIf="activeTab === 'library'">
+
+      <header class="top-header">
+        <button class="profile-circle" (click)="openProfile()">
+          {{ userInitial }}
+        </button>
+
+        <div class="header-title">
+          <h1>Your Library</h1>
+          <p>Your personal music collection</p>
+        </div>
+
+        <button
+          class="header-icon"
+          (click)="changeTab('create')">
+          <ion-icon name="add-outline"></ion-icon>
+        </button>
+      </header>
+
+      <!-- LIBRARY FILTERS -->
+      <div class="library-filter">
+
+        <button
+          [class.active]="libraryFilter === 'playlists'"
+          (click)="setLibraryFilter('playlists')">
+          <ion-icon name="albums-outline"></ion-icon>
+          Playlists
+        </button>
+
+        <button
+          [class.active]="libraryFilter === 'liked'"
+          (click)="setLibraryFilter('liked')">
+          <ion-icon name="heart-outline"></ion-icon>
+          Liked Songs
+        </button>
+
+      </div>
+
+
+      <!-- PLAYLISTS VIEW -->
+      <div *ngIf="libraryFilter === 'playlists' && !selectedPlaylist">
+
+        <div class="section-heading">
+          <div>
+            <h2>Recently Added</h2>
+            <p>Your created playlists</p>
+          </div>
+
+          <button
+            class="sort-button"
+            (click)="togglePlaylistSort()">
+
+            <ion-icon name="swap-vertical-outline"></ion-icon>
+            {{ sortNewestFirst ? 'Newest' : 'Oldest' }}
+
+          </button>
+        </div>
+
+        <!-- LIKED SONGS CARD -->
+        <div
+          class="liked-songs-card"
+          (click)="openLikedSongs()">
+
+          <div class="liked-songs-art">
+            <ion-icon name="heart"></ion-icon>
+          </div>
+
+          <div class="liked-songs-info">
+            <h3>Liked Songs</h3>
+            <p>{{ likedSongs.length }} liked songs</p>
+          </div>
+
+          <ion-icon
+            class="card-arrow"
+            name="chevron-forward-outline">
+          </ion-icon>
+
+        </div>
+
+        <!-- CREATED PLAYLISTS -->
+        <div
+          class="playlist-list"
+          *ngIf="playlists && playlists.length > 0">
+
+          <div
+            class="playlist-card"
+            *ngFor="let playlist of sortedPlaylists">
+
+            <div
+              class="playlist-art"
+              (click)="openPlaylist(playlist)">
+
+              <ion-icon name="musical-notes"></ion-icon>
+
+            </div>
+
+            <div
+              class="playlist-info"
+              (click)="openPlaylist(playlist)">
+
+              <h3>{{ playlist.name }}</h3>
+              <p>{{ playlist.song_count || 0 }} songs</p>
+
+            </div>
+
+            <button
+              class="playlist-more-button"
+              (click)="editPlaylist(playlist.playlist_id); $event.stopPropagation()">
+
+              <ion-icon name="ellipsis-horizontal"></ion-icon>
+
+            </button>
+
+          </div>
+
+        </div>
+
+        <!-- EMPTY PLAYLISTS -->
+        <div
+          class="empty-state"
+          *ngIf="!playlists || playlists.length === 0">
+
+          <ion-icon name="albums-outline"></ion-icon>
+
+          <h3>No playlists yet</h3>
+          <p>Create your first playlist and add your favorite songs.</p>
+
+          <button
+            class="primary-button"
+            (click)="changeTab('create')">
+
+            <ion-icon name="add-outline"></ion-icon>
+            Create a Playlist
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- LIKED SONGS VIEW -->
+      <div *ngIf="libraryFilter === 'liked' && !selectedPlaylist">
+
+        <div class="liked-songs-header">
+          <div class="liked-songs-large-art">
+            <ion-icon name="heart"></ion-icon>
+          </div>
+
+          <div>
+            <span class="featured-label">YOUR COLLECTION</span>
+            <h2>Liked Songs</h2>
+            <p>{{ likedSongRecords.length }} songs</p>
+          </div>
+        </div>
+
+        <div
+          class="liked-song-list"
+          *ngIf="likedSongRecords && likedSongRecords.length > 0">
+
+          <div
+            class="liked-song-item"
+            *ngFor="let song of likedSongRecords">
+
+            <button
+              class="liked-song-play"
+              (click)="playLikedSong(song)">
+
+              <ion-icon name="play"></ion-icon>
+
+            </button>
+
+            <div
+              class="liked-song-info"
+              (click)="playLikedSong(song)">
+
+              <h4>{{ song.song_title }}</h4>
+              <p>{{ song.artist }}</p>
+
+            </div>
+
+            <button
+              class="remove-liked-button"
+              (click)="removeLikedSong(song.id)">
+
+              <ion-icon name="heart"></ion-icon>
+
+            </button>
+
+          </div>
+
+        </div>
+
+        <div
+          class="empty-state"
+          *ngIf="!likedSongRecords || likedSongRecords.length === 0">
+
+          <ion-icon name="heart-outline"></ion-icon>
+
+          <h3>No liked songs yet</h3>
+          <p>Like songs from the Search page to save them here.</p>
+
+          <button
+            class="primary-button"
+            (click)="changeTab('search')">
+
+            <ion-icon name="search-outline"></ion-icon>
+            Discover Music
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- SELECTED PLAYLIST DETAILS -->
+      <div
+        class="selected-playlist-section"
+        *ngIf="selectedPlaylist">
+
+        <div class="selected-playlist-header">
+
+          <button
+            class="back-button"
+            (click)="closePlaylistDetails()">
+
+            <ion-icon name="arrow-back-outline"></ion-icon>
+            Back to Library
+
+          </button>
+
+          <div class="selected-playlist-art">
+            <ion-icon name="musical-notes"></ion-icon>
+          </div>
+
+          <div class="selected-playlist-info">
+            <span class="featured-label">PLAYLIST</span>
+            <h2>{{ selectedPlaylist.name }}</h2>
+            <p>{{ selectedPlaylist.songs.length }} songs</p>
+          </div>
+
+        </div>
+
+        <div class="section-heading">
+          <div>
+            <h2>Playlist Songs</h2>
+            <p>Your selected music</p>
+          </div>
+
+          <button
+            class="text-button"
+            (click)="changeTab('search')">
+
+            <ion-icon name="add-outline"></ion-icon>
+            Add Songs
+
+          </button>
+        </div>
+
+        <div
+          class="playlist-song-list"
+          *ngIf="selectedPlaylist.songs && selectedPlaylist.songs.length > 0">
+
+          <div
+            class="playlist-song-item"
+            *ngFor="let song of selectedPlaylist.songs">
+
+            <button
+              class="playlist-song-play"
+              (click)="playPlaylistSong(song)">
+
+              <ion-icon name="play"></ion-icon>
+
+            </button>
+
+            <div
+              class="playlist-song-info"
+              (click)="playPlaylistSong(song)">
+
+              <h4>{{ song.title }}</h4>
+              <p>{{ song.artist }}</p>
+
+            </div>
+
+            <button
+              class="remove-playlist-song-button"
+              (click)="removePlaylistSong(song.song_id)">
+
+              <ion-icon name="close-outline"></ion-icon>
+
+            </button>
+
+          </div>
+
+        </div>
+
+        <div
+          class="empty-state"
+          *ngIf="!selectedPlaylist.songs || selectedPlaylist.songs.length === 0">
+
+          <ion-icon name="musical-notes"></ion-icon>
+
+          <h3>This playlist is empty</h3>
+          <p>Go to Search and add songs to this playlist.</p>
+
+          <button
+            class="primary-button"
+            (click)="changeTab('search')">
+
+            <ion-icon name="add-outline"></ion-icon>
+            Add Songs
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================== -->
+    <!-- CREATE PLAYLIST PAGE -->
+    <!-- ====================================== -->
+    <section *ngIf="activeTab === 'create'">
+
+      <header class="top-header">
+        <button class="profile-circle" (click)="openProfile()">
+          {{ userInitial }}
+        </button>
+
+        <div class="header-title">
+          <h1>Create Playlist</h1>
+          <p>Organize your favorite music</p>
+        </div>
+
+        <button
+          class="header-icon"
+          (click)="changeTab('library')">
+
+          <ion-icon name="library-outline"></ion-icon>
+
+        </button>
+      </header>
+
+      <div class="create-playlist-container">
+
+        <div class="create-playlist-art">
+          <ion-icon name="musical-notes"></ion-icon>
+        </div>
+
+        <h2>Create Your Playlist</h2>
+        <p>Give your playlist a name and start adding your favorite songs.</p>
+
+        <div class="create-playlist-form">
+
+          <label for="playlistName">Playlist Name</label>
+
+          <input
+            id="playlistName"
+            type="text"
+            [(ngModel)]="playlistName"
+            placeholder="Enter playlist name...">
+
+          <button
+            class="primary-button create-button"
+            (click)="addPlaylist()">
+
+            <ion-icon name="add-circle-outline"></ion-icon>
+            Create Playlist
+
+          </button>
+
+        </div>
+
+        <div class="collaborative-info">
+          <ion-icon name="people-outline"></ion-icon>
+
+          <div>
+            <h4>Make it yours</h4>
+            <p>Create playlists for your favorite songs, moods, and moments.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <!-- ====================================== -->
+  <!-- PROFILE DRAWER OVERLAY -->
+  <!-- ====================================== -->
+  <div
+    class="drawer-overlay"
+    *ngIf="isDrawerOpen"
+    (click)="closeDrawer()">
+  </div>
+
+  <!-- PROFILE DRAWER -->
+  <div
+    class="profile-drawer"
+    [class.open]="isDrawerOpen">
+
+    <div class="drawer-header">
+
+      <div class="drawer-user-info">
+
+        <div class="drawer-avatar">
+          {{ userInitial }}
+        </div>
+
+        <div>
+          <h3>{{ userName }}</h3>
+          <p>{{ userEmail }}</p>
+        </div>
+
+      </div>
+
+      <button
+        class="drawer-close-button"
+        (click)="closeDrawer()">
+
+        <ion-icon name="close-outline"></ion-icon>
+
+      </button>
+
+    </div>
+
+    <div class="drawer-menu">
+
+      <button
+        class="drawer-menu-item"
+        (click)="changeTab('home'); closeDrawer()">
+
+        <ion-icon name="home-outline"></ion-icon>
+        <span>Home</span>
+
+      </button>
+
+      <button
+        class="drawer-menu-item"
+        (click)="changeTab('search'); closeDrawer()">
+
+        <ion-icon name="search-outline"></ion-icon>
+        <span>Search Music</span>
+
+      </button>
+
+      <button
+        class="drawer-menu-item"
+        (click)="changeTab('library'); closeDrawer()">
+
+        <ion-icon name="library-outline"></ion-icon>
+        <span>Your Library</span>
+
+      </button>
+
+      <button
+        class="drawer-menu-item"
+        (click)="changeTab('create'); closeDrawer()">
+
+        <ion-icon name="add-circle-outline"></ion-icon>
+        <span>Create Playlist</span>
+
+      </button>
+
+      <div class="drawer-divider"></div>
+
+      <button
+        class="drawer-menu-item"
+        (click)="openLikedSongs(); closeDrawer()">
+
+        <ion-icon name="heart-outline"></ion-icon>
+        <span>Liked Songs</span>
+
+      </button>
+
+      <button
+        class="drawer-menu-item"
+        (click)="showAbout()">
+
+        <ion-icon name="information-circle-outline"></ion-icon>
+        <span>About Melodify</span>
+
+      </button>
+
+      <button
+        class="drawer-menu-item"
+        (click)="openAccountSettings()">
+
+        <ion-icon name="settings-outline"></ion-icon>
+        <span>Settings</span>
+
+      </button>
+
+      <div class="drawer-divider"></div>
+
+      <button
+        class="drawer-menu-item logout-item"
+        (click)="logout()">
+
+        <ion-icon name="log-out-outline"></ion-icon>
+        <span>Log Out</span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ====================================== -->
+  <!-- MINI MUSIC PLAYER -->
+  <!-- ====================================== -->
+  <div
+    class="mini-player"
+    *ngIf="currentTrack"
+    [class.player-expanded]="isPlayerExpanded">
+
+    <div class="mini-player-main">
+
+      <div
+        class="mini-player-art"
+        (click)="openFullPlayer()">
+
+        <img
+          *ngIf="currentTrack.imageUrl"
+          [src]="currentTrack.imageUrl"
+          alt="Song artwork">
+
+        <ion-icon
+          *ngIf="!currentTrack.imageUrl"
+          name="musical-notes">
+        </ion-icon>
+
+      </div>
+
+      <div
+        class="mini-player-info"
+        (click)="openFullPlayer()">
+
+        <h4>{{ currentTrack.title }}</h4>
+        <p>{{ currentTrack.artist }}</p>
+
+      </div>
+
+      <button
+        class="mini-player-control"
+        (click)="toggleShuffle()">
+
+        <ion-icon
+          name="shuffle"
+          [class.active-control]="isShuffleEnabled">
+        </ion-icon>
+
+      </button>
+
+      <button
+        class="mini-player-control"
+        (click)="previousTrack()">
+
+        <ion-icon name="play-skip-back"></ion-icon>
+
+      </button>
+
+      <button
+        class="mini-player-play"
+        (click)="toggleExternalPlayback()">
+
+        <ion-icon
+          [name]="isPlaying ? 'pause' : 'play'">
+        </ion-icon>
+
+      </button>
+
+      <button
+        class="mini-player-control"
+        (click)="nextTrack()">
+
+        <ion-icon name="play-skip-forward"></ion-icon>
+
+      </button>
+
+      <button
+        class="mini-player-control"
+        (click)="toggleRepeat()">
+
+        <ion-icon
+          name="repeat"
+          [class.active-control]="repeatMode !== 'off'">
+        </ion-icon>
+
+      </button>
+
+      <button
+        class="mini-player-close"
+        (click)="stopExternalMusic()">
+
+        <ion-icon name="close-outline"></ion-icon>
+
+      </button>
+
+    </div>
+
+    <!-- MINI PLAYER PROGRESS -->
+    <div class="mini-player-progress">
+
+      <span>{{ formatMusicTime(currentTime) }}</span>
+
+      <input
+        type="range"
+        min="0"
+        [max]="duration || 0"
+        [value]="currentTime"
+        (input)="seekMusic($event)">
+
+      <span>{{ formatMusicTime(duration) }}</span>
+
+    </div>
+
+  </div>
+
+
+  <!-- ====================================== -->
+  <!-- FULL SCREEN MUSIC PLAYER -->
+  <!-- ====================================== -->
+  <div
+    class="full-player-overlay"
+    *ngIf="isPlayerExpanded && currentTrack">
+
+    <div class="full-player-container">
+
+      <div class="full-player-header">
+
+        <button
+          class="full-player-header-button"
+          (click)="minimizePlayer()">
+
+          <ion-icon name="chevron-down"></ion-icon>
+
+        </button>
+
+        <div class="full-player-header-title">
+          <span>NOW PLAYING</span>
+          <p>Melodify Music Player</p>
+        </div>
+
+        <button
+          class="full-player-header-button"
+          (click)="stopExternalMusic()">
+
+          <ion-icon name="close-outline"></ion-icon>
+
+        </button>
+
+      </div>
+
+      <!-- FULL PLAYER ARTWORK -->
+      <div class="full-player-artwork">
+
+        <img
+          *ngIf="currentTrack.imageUrl"
+          [src]="currentTrack.imageUrl"
+          alt="Current song artwork">
+
+        <div
+          class="full-player-placeholder"
+          *ngIf="!currentTrack.imageUrl">
+
+          <ion-icon name="musical-notes"></ion-icon>
+
+        </div>
+
+      </div>
+
+      <!-- TRACK INFORMATION -->
+      <div class="full-player-track-info">
+
+        <div>
+          <h2>{{ currentTrack.title }}</h2>
+          <p>{{ currentTrack.artist }}</p>
+        </div>
+
+      </div>
+
+      <!-- FULL PLAYER PROGRESS -->
+      <div class="full-player-progress">
+
+        <input
+          type="range"
+          min="0"
+          [max]="duration || 0"
+          [value]="currentTime"
+          (input)="seekMusic($event)">
+
+        <div class="full-player-time">
+
+          <span>{{ formatMusicTime(currentTime) }}</span>
+          <span>{{ formatMusicTime(duration) }}</span>
+
+        </div>
+
+      </div>
+
+      <!-- FULL PLAYER CONTROLS -->
+      <div class="full-player-controls">
+
+        <button
+          class="full-player-secondary-control"
+          (click)="toggleShuffle()">
+
+          <ion-icon
+            name="shuffle"
+            [class.active-control]="isShuffleEnabled">
+          </ion-icon>
+
+        </button>
+
+        <button
+          class="full-player-secondary-control"
+          (click)="previousTrack()">
+
+          <ion-icon name="play-skip-back"></ion-icon>
+
+        </button>
+
+        <button
+          class="full-player-main-control"
+          (click)="toggleExternalPlayback()">
+
+          <ion-icon
+            [name]="isPlaying ? 'pause' : 'play'">
+          </ion-icon>
+
+        </button>
+
+        <button
+          class="full-player-secondary-control"
+          (click)="nextTrack()">
+
+          <ion-icon name="play-skip-forward"></ion-icon>
+
+        </button>
+
+        <button
+          class="full-player-secondary-control"
+          (click)="toggleRepeat()">
+
+          <ion-icon
+            name="repeat"
+            [class.active-control]="repeatMode !== 'off'">
+          </ion-icon>
+
+        </button>
+
+      </div>
+
+      <!-- VOLUME CONTROL -->
+      <div class="full-player-volume">
+
+        <ion-icon name="volume-high"></ion-icon>
+
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          [value]="volume"
+          (input)="changeMusicVolume($event)">
+
+      </div>
+
+      <div class="full-player-footer">
+        <ion-icon name="musical-notes"></ion-icon>
+        <span>Listening with Melodify</span>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ====================================== -->
+  <!-- BOTTOM NAVIGATION -->
+  <!-- ====================================== -->
+  <div class="bottom-navigation">
+
+    <button
+      [class.active]="activeTab === 'home'"
+      (click)="changeTab('home')">
+
+      <ion-icon name="home-outline"></ion-icon>
+      <span>Home</span>
+
+    </button>
+
+    <button
+      [class.active]="activeTab === 'search'"
+      (click)="changeTab('search')">
+
+      <ion-icon name="search-outline"></ion-icon>
+      <span>Search</span>
+
+    </button>
+
+    <button
+      [class.active]="activeTab === 'library'"
+      (click)="changeTab('library')">
+
+      <ion-icon name="library-outline"></ion-icon>
+      <span>Library</span>
+
+    </button>
+
+    <button
+      [class.active]="activeTab === 'create'"
+      (click)="changeTab('create')">
+
+      <ion-icon name="add-circle-outline"></ion-icon>
+      <span>Create</span>
+
+    </button>
+
+  </div>
+
+</ion-content>
