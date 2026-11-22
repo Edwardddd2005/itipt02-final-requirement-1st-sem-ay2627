@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://dimension-limitation-rental-solar.trycloudflare.com/api'
+  apiUrl: 'https://rating-roy-passage-findlaw.trycloudflare.com/api'
 };
