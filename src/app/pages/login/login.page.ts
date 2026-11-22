@@ -15,6 +15,8 @@ import {
 import { addIcons } from 'ionicons';
 import { musicalNotes } from 'ionicons/icons';
 
+import { environment } from '../../../environments/environment';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -36,8 +38,8 @@ export class LoginPage {
   email = '';
   password = '';
 
-  // FASTAPI BACKEND URL
-  private apiUrl = 'http://127.0.0.1:8000/api';
+  // USE ENVIRONMENT API URL
+  private apiUrl = environment.apiUrl;
 
   constructor(private router: Router) {
     addIcons({ musicalNotes });
@@ -106,7 +108,7 @@ export class LoginPage {
       console.error('Login error:', error);
 
       alert(
-        'Hindi makakonekta sa FastAPI backend. Tiyaking tumatakbo ang Uvicorn sa port 8000.'
+        'Hindi makakonekta sa FastAPI backend. Tiyaking tumatakbo ang Uvicorn at Cloudflare Tunnel.'
       );
 
     }
