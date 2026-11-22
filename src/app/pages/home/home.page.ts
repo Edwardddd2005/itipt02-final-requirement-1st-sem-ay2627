@@ -1,4 +1,4 @@
-
+import { environment } from '../../../environments/environment';
 import {
   Component,
   OnDestroy,
@@ -116,7 +116,7 @@ interface LikedSong {
 
 export class HomePage implements OnDestroy {
 
-  private readonly apiUrl = 'http://127.0.0.1:8000/api';
+  private readonly apiUrl = environment.apiUrl;
 
   activeTab = 'home';
 
