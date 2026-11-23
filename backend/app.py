@@ -164,7 +164,7 @@ def login(data: LoginRequest):
             )
 
         return {
-            "message": "Matagumpay ang login!",
+            "message": "Login Successful!",
             "user": {
                 "user_id": user[0],
                 "username": user[1],

@@ -29,7 +29,7 @@ export class RegisterPage {
       !this.email.trim() ||
       !this.password
     ) {
-      alert('Pakilagyan ang lahat ng kinakailangang impormasyon.');
+      alert('Fill the informations needed.');
       return;
     }
 
@@ -56,14 +56,14 @@ export class RegisterPage {
         alert(
           result.message ||
           result.detail ||
-          'Hindi nagtagumpay ang registration.'
+          'Registration Failed.'
         );
 
         console.error('Registration response:', result);
         return;
       }
 
-      alert(result.message || 'Matagumpay ang registration!');
+      alert(result.message || 'Registration Successful!');
 
     } catch (error) {
 
