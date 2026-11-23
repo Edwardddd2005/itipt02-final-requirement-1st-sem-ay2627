@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://ryan-aaron-battle-asin.trycloudflare.com/api'
+  apiUrl: 'https://compared-surveillance-traditions-usd.trycloudflare.com/api'
 };
