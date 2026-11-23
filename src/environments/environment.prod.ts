@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://rating-roy-passage-findlaw.trycloudflare.com/api'
+  apiUrl: 'https://ryan-aaron-battle-asin.trycloudflare.com/api'
 };
